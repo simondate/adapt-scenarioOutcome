@@ -1,11 +1,8 @@
 <div class="component__inner scenarioOutcome__widget__inner">
   {{> component}}
-  <div class="component__widget scenarioOutcome__widget">
-    <div class="scenarioOutcome__widget__btn-container">
-      {{#each _items}}
-      {{{log this}}}
+  <div class="scenarioOutcome__widget__btn-container">
+    {{#each _buttons}}
       {{> scenarioOutcome-item this}}
-      {{/each}}
-    </div>
+    {{/each}}
   </div>
 </div>

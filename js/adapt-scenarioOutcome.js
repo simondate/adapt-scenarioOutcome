@@ -7,8 +7,7 @@ define([
   var ScenarioOutcomeView = ComponentView.extend({
 
     events: {
-      'click .js-quicknav-btn': 'onButtonClick',
-      'mouseover .js-quicknav-btn': 'onButtonTooltip'
+      'click .js-scenarioOutcome-btn': 'onButtonClick'
     },
 
     preRender: function() {
@@ -45,6 +44,25 @@ define([
           block.set('_isAvailable', false);
         }
       });
+    },
+
+    onButtonClick: function(event) {
+
+      var $target = $(event.currentTarget);
+      console.log($target)
+      var interaction = $target.attr('data-type');
+      var index = $target.attr('data-item-index');
+
+      switch (interaction) {
+        case '_restart':
+          console.log('restart page');
+          break;
+        case '_menu':
+          console.log('Go to menu');
+          break;
+        default:
+        break;
+      }
     },
 
     setupInview: function() {

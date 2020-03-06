@@ -1,42 +1,17 @@
 {{import_globals}}
 {{#if _isEnabled}}
 <button
-  class="btn-text scenarioOutcome__btn{{#if _classes}} {{_classes}}{{/if}}{{#if text}} has-text{{/if}}{{#if _iconClass}} has-icon{{/if}}{{#if _alignIconRight}} icon-is-right{{else}} icon-is-left{{/if}} js-scenarioOutcome-btn"
+  class="btn-text scenarioOutcome__btn{{#if _classes}} {{_classes}}{{/if}} js-scenarioOutcome-btn"
   role="link"
-  data-type="{{type}}"
-  data-id="{{_id}}"
-  data-item-index="{{_index}}"
-  {{#any _isHidden locked}} disabled="disabled"{{/any}}
-  aria-label="{{{compile ariaLabel this}}} {{#if locked}}{{@root/_globals._accessibility._ariaLabels.locked}}{{else if _isComplete}}{{@root/_globals._accessibility._ariaLabels.complete}}{{else}}{{@root/_globals._accessibility._ariaLabels.incomplete}}{{/if}}"
-  tooltip="{{#if _showTooltip}}{{{compile tooltip this}}}{{/if}}">
-  {{{log this}}}
+  data-type="{{@key}}">
   <div class="scenarioOutcome__btn-inner">
-
-    {{#unless _alignIconRight}}
-    {{#if _iconClass}}
-    <div class="scenarioOutcome__btn-icon">
-      <div class="icon {{_iconClass}}"></div>
-    </div>
-    {{/if}}
-    {{/unless}}
-
     {{#if text}}
     <div class="scenarioOutcome__btn-text">
       <div class="scenarioOutcome__btn-text-inner">
-        {{{compile text this}}} {{{this}}}
+        {{{compile text this}}}
       </div>
     </div>
     {{/if}}
-
-    {{#if _alignIconRight}}
-    {{#if _iconClass}}
-    <div class="scenarioOutcome__btn-icon">
-      <div class="icon {{_iconClass}}"></div>
-    </div>
-    {{/if}}
-    {{/if}}
-
   </div>
-
 </button>
 {{/if}}
