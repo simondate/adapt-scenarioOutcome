@@ -1,0 +1,11 @@
+<div class="component__inner scenarioOutcome__widget__inner">
+  {{> component}}
+  <div class="component__widget scenarioOutcome__widget">
+    <div class="scenarioOutcome__widget__btn-container">
+      {{#each _items}}
+      {{{log this}}}
+      {{> scenarioOutcome-item this}}
+      {{/each}}
+    </div>
+  </div>
+</div>
