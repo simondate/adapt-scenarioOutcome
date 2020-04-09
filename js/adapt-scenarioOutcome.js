@@ -11,68 +11,86 @@ define([
     },
 
     preRender: function() {
-      console.log(this)
       this.checkIfResetOnRevisit();
     },
 
     postRender: function() {
       this.setReadyStatus();
       this.setupInview();
-      this.listenTo(this.model, {
-        "change:_isHidden": this.isRevealed
-      });
-    },
-
-    isRevealed: function() {
-      if(this.model.get('_isHidden')) return;
-      var ancestorModels = this.model.getAncestorModels();
-      var blockPos = ancestorModels[0].get('_nthChild');
-      console.log(blockPos)
-      var page = ancestorModels[2];
-      this.hideBlocks(page, blockPos);
     },
 
     hideBlocks: function(page, currentBlockNthChild) {
-
-      _.each(page.findDescendantModels('blocks'), function(block){
+      _.each(page.findDescendantModels('blocks'), function(block) {
         block.set('_isLocked', false)
-        console.log(block.get('_nthChild'))
-        console.log(currentBlockNthChild)
-        if(block.get('_nthChild') > currentBlockNthChild) {
-          console.log(block)
+        if (block.get('_nthChild') > currentBlockNthChild) {
           block.set('_isHidden', true);
           block.set('_isAvailable', false);
         }
       });
+      Adapt.trigger("pageLevelProgress:update");
     },
 
     onButtonClick: function(event) {
 
       var $target = $(event.currentTarget);
-      console.log($target)
       var interaction = $target.attr('data-type');
       var index = $target.attr('data-item-index');
 
       switch (interaction) {
         case '_restart':
-          console.log('restart page');
+          this.restartPage();
           break;
         case '_menu':
-          console.log('Go to menu');
+          this.goMenu();
           break;
         default:
-        break;
+          break;
+      }
+    },
+
+    restartPage: function() {
+      this.model.findAncestor('articles')._resetArticle();
+      Backbone.history.navigate(location.hash, {
+        trigger: true,
+        replace: false
+      });
+    },
+
+    goMenu: function() {
+      var parents = this.model.getAncestorModels();
+      for (var i = 0, l = parents.length; i < l; i++) {
+
+        var model = parents[i];
+        switch (model.get('_type')) {
+          case 'menu':
+            var id = model.get('_id')
+            var isCourse = (id === Adapt.course.get('_id'));
+            var hash = '#' + (isCourse ? '/' : '/id/' + id);
+            Backbone.history.navigate(hash, {
+              trigger: true,
+              replace: false
+            });
+          case 'course':
+            var id = model.get('_id')
+            var isCourse = (id === Adapt.course.get('_id'));
+            var hash = '#' + (isCourse ? '/' : '/id/' + id);
+            Backbone.history.navigate(hash, {
+              trigger: true,
+              replace: false
+            });
+        }
+
       }
     },
 
     setupInview: function() {
       var selector = this.getInviewElementSelector();
       if (!selector) {
-        // this.setCompletionStatus();
+        this.setCompletionStatus();
         return;
       }
 
-      // this.setupInviewCompletion(selector);
+      this.setupInviewCompletion(selector);
     },
 
     /**
@@ -96,13 +114,12 @@ define([
         this.model.reset(isResetOnRevisit);
       }
     }
-  },
-  {
+  }, {
     template: 'scenarioOutcome'
   });
 
   return Adapt.register('scenarioOutcome', {
-    model: ComponentModel.extend({}),// create a new class in the inheritance chain so it can be extended per component type if necessary later
+    model: ComponentModel.extend({}), // create a new class in the inheritance chain so it can be extended per component type if necessary later
     view: ScenarioOutcomeView
   });
 });
