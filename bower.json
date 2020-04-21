@@ -1,6 +1,6 @@
 {
   "name": "adapt-scenarioOutcome",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "framework": ">=5",
   "homepage": "https://github.com/adaptlearning/adapt-contrib-text",
   "issues": "https://github.com/adaptlearning/adapt_framework/issues/new",
